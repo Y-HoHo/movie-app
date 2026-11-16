@@ -22,10 +22,10 @@ export const searchMovies = async (page) => {
     store.state.message = ""; // 페이지를 가져오면 메세지 출력은 없어져야 하기 때문.
   }
   try {
-    const res = await fetch(
-      `https://omdbapi.com?apikey=1e3eab70&s=${store.state.searchText}&page=${page}`,
-    );
-
+    const res = await fetch("/api/movie", {
+      method: "POST",
+      body: JSON.stringify({ title: store.state.searchText, page: page }),
+    });
     const { Search, totalResults, Response, Error } = await res.json(); // Response가 false일때는 영화 정보를 가져오지 못했기때문에 Error 반환
     if (Response === "True") {
       store.state.movies = [...store.state.movies, ...Search];
@@ -43,9 +43,11 @@ export const searchMovies = async (page) => {
 
 export const getMovieDetails = async (id) => {
   try {
-    const res = await fetch(
-      `https://omdbapi.com?apikey=1e3eab70&i=${id}&$plot=full`,
-    ); // id = 해당하는 영화, plot = 영화 상세 설명
+    // id = 해당하는 영화, plot = 영화 상세 설명
+    const res = await fetch("/api/movie", {
+      method: "POST",
+      body: JSON.stringify({ id: id }),
+    });
     store.state.movie = await res.json();
   } catch (error) {
     console.log("getMovieDetails : ", error);
