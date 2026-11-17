@@ -23,7 +23,7 @@ export default class MovieList extends Component {
           ? `<div class="message">${movieStore.state.message}</div>`
           : '<div class="movies"></div>'
       }
-      <div class="the-loader hide text-center">
+      <div class="the-loader hide text-center"></div>
     `;
 
     const moviesEl = this.el.querySelector(".movies");

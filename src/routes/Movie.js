@@ -14,13 +14,22 @@ export default class Movie extends Component {
     `;
     await getMovieDetails(history.state.id);
     const { movie } = movieStore.state;
-    const bigPoster = movie.Poster.replace(
-      "UX380_CR0,0,380,562",
-      "UX680_CR0,0,670,1005",
-    );
+    if (movie.Response === "False") {
+      // 영화 정보를 못 가져온 경우 (movie.Poster가 없어서 아래 replace에서 에러가 남)
+      this.el.innerHTML = /* html */ `
+        <div class="specs">
+          <div class="title">${movie.Error}</div>
+        </div>
+      `;
+      return;
+    }
+    const bigPoster =
+      movie.Poster === "N/A"
+        ? "" // 포스터가 없는 영화
+        : movie.Poster.replace("UX380_CR0,0,380,562", "UX680_CR0,0,670,1005");
 
     this.el.innerHTML = /* html */ `
-      <div style="background-image: url(${bigPoster})" class="poster"></div>
+      <div ${bigPoster ? `style="background-image: url(${bigPoster})"` : ""} class="poster"></div>
       <div class="specs">
         <div class="title">${movie.Title}</div>
         <div class="labels">

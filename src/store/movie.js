@@ -7,7 +7,7 @@ const store = new Store({
   movies: [],
   movie: {},
   loading: false,
-  message: "Search for the move title!",
+  message: "Search for the movie title!",
 });
 
 export default store;
